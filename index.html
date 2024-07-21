@@ -16,7 +16,7 @@
       
       if (encodedUrl) {
         // Decode the Base64 parameter and redirect
-        const decodedUrl = decodeBase64(encodedUrl);
+        const decodedUrl = decodeBase64(encodedUrl).replace("https://pietrodjaowjao.github.io/nonsense/", "");
         window.location.replace(decodedUrl);
       } else {
         // Fallback URL if no parameter is provided
