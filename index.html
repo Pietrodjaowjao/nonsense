@@ -10,15 +10,17 @@
         return decodeURIComponent(escape(window.atob(base64)));
       }
 
-      // Get URL parameters
-      const params = new URLSearchParams(window.location.search);
-      const encodedUrl = params.get('url');
-      
-      if (encodedUrl) {
+      // Get the current URL path
+      const path = window.location.pathname;
+
+      // Extract the base64 part of the path (the last segment)
+      const base64Part = path.substring(path.lastIndexOf('/') + 1);
+
+      if (base64Part) {
         try {
-          // Decode the Base64 parameter
-          let decodedUrl = decodeBase64(encodedUrl);
-          
+          // Decode the Base64 part
+          let decodedUrl = decodeBase64(base64Part);
+
           // Ensure the decoded URL has a scheme
           if (!/^https?:\/\//i.test(decodedUrl)) {
             decodedUrl = 'https://' + decodedUrl;
@@ -31,7 +33,7 @@
           window.location.replace('https://google.com'); // Fallback URL
         }
       } else {
-        // Fallback URL if no parameter is provided
+        // Fallback URL if no base64 part is provided
         window.location.replace('https://google.com');
       }
     </script>
