@@ -7,7 +7,7 @@
     <script>
       // Function to decode Base64
       function decodeBase64(base64) {
-        return atob(base64);
+        return decodeURIComponent(escape(window.atob(base64)));
       }
 
       // Get URL parameters
@@ -16,8 +16,15 @@
       
       if (encodedUrl) {
         try {
-          // Decode the Base64 parameter and redirect
-          const decodedUrl = decodeBase64(encodedUrl);
+          // Decode the Base64 parameter
+          let decodedUrl = decodeBase64(encodedUrl);
+          
+          // Ensure the decoded URL has a scheme
+          if (!/^https?:\/\//i.test(decodedUrl)) {
+            decodedUrl = 'https://' + decodedUrl;
+          }
+
+          // Redirect to the decoded URL
           window.location.replace(decodedUrl);
         } catch (e) {
           console.error('Invalid base64 string:', e);
