@@ -8,7 +8,7 @@
       // Function to decode Base64 with URL-safe characters
       function decodeBase64(base64) {
         // Replace URL-safe characters with original Base64 characters
-        return decodeURIComponent(escape(window.atob(base64)));
+        return window.atob(base64);
       }
 
       // Get the current URL path
