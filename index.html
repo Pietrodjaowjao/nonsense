@@ -5,8 +5,10 @@
   </head>
   <body>
     <script>
-      // Function to decode Base64
+      // Function to decode Base64 with URL-safe characters
       function decodeBase64(base64) {
+        // Replace URL-safe characters with original Base64 characters
+        base64 = base64.replace(/-/g, '+').replace(/_/g, '/');
         return decodeURIComponent(escape(window.atob(base64)));
       }
 
@@ -30,7 +32,7 @@
           window.location.replace(decodedUrl);
         } catch (e) {
           console.error('Invalid base64 string:', e);
-          window.location.replace('https://youtube.com'); // Fallback URL
+          window.location.replace('https://google.com'); // Fallback URL
         }
       } else {
         // Fallback URL if no base64 part is provided
