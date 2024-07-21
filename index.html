@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <!-- Stole the memes from https://github.com/iwakkrg/iwakkrg.github.io -->
-  </head>
-  <body>
-    <script>
-      // Function to decode Base64 with URL-safe characters
-      function decodeBase64(base64) {
-        // Replace URL-safe characters with original Base64 characters
-        return window.atob(base64);
-      }
+<head>
+  <!-- Stole the memes from https://github.com/iwakkrg/iwakkrg.github.io -->
+</head>
+<body>
+  <script>
+    // Function to decode Base64 with URL-safe characters
+    function decodeBase64(base64) {
+      // Replace URL-safe characters with original Base64 characters
+      return window.atob(base64.replace(/-/g, '+').replace(/_/g, '/'));
+    }
 
-      // Get the current URL path
-      const path = window.location.pathname;
+    // Get the query parameters from the URL
+    const params = new URLSearchParams(window.location.search);
 
-      // Extract the base64 part of the path (the last segment)
-      const base64Part = path.substring(path.lastIndexOf('/') + 1);
+    // Extract the base64 parameter from the query string
+    const base64Part = params.get('base64');
 
-      if (base64Part) {
-        try {
-          // Decode the Base64 part
-          let decodedUrl = decodeBase64(base64Part);
+    if (base64Part) {
+      try {
+        // Decode the Base64 part
+        let decodedUrl = decodeBase64(base64Part);
 
-          // Ensure the decoded URL has a scheme
-          if (!/^https?:\/\//i.test(decodedUrl)) {
-            decodedUrl = 'https://' + decodedUrl;
-          }
-
-          // Redirect to the decoded URL
-          window.location.replace(decodedUrl);
-        } catch (e) {
-          console.error('Invalid base64 string:', e);
-          window.location.replace('https://youtube.com'); // Fallback URL
+        // Ensure the decoded URL has a scheme
+        if (!/^https?:\/\//i.test(decodedUrl)) {
+          decodedUrl = 'https://' + decodedUrl;
         }
-      } else {
-        // Fallback URL if no base64 part is provided
-        window.location.replace('https://google.com');
+
+        // Redirect to the decoded URL
+        window.location.replace(decodedUrl);
+      } catch (e) {
+        console.error('Invalid base64 string:', e);
+        window.location.replace('https://youtube.com'); // Fallback URL
       }
-    </script>
-  </body>
+    } else {
+      // Fallback URL if no base64 parameter is provided
+      window.location.replace('https://google.com');
+    }
+  </script>
+</body>
 </html>
