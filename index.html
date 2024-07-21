@@ -7,7 +7,9 @@
     <script>
       // Function to decode Base64
       function decodeBase64(base64) {
-        return decodeURIComponent(escape(window.atob(base64)));
+        return decodeURIComponent(Array.prototype.map.call(atob(base64), function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
       }
 
       // Get URL parameters
@@ -15,12 +17,17 @@
       const encodedUrl = params.get('url');
       
       if (encodedUrl) {
-        // Decode the Base64 parameter and redirect
-        const decodedUrl = decodeBase64(encodedUrl).replace("https://pietrodjaowjao.github.io/nonsense/", "");
-        window.location.replace(decodedUrl);
+        try {
+          // Decode the Base64 parameter and redirect
+          const decodedUrl = decodeBase64(encodedUrl);
+          window.location.replace(decodedUrl);
+        } catch (e) {
+          console.error('Invalid base64 string:', e);
+          window.location.replace('https://google.com'); // Fallback URL
+        }
       } else {
         // Fallback URL if no parameter is provided
-        window.location.replace("https://google.com");
+        window.location.replace('https://google.com');
       }
     </script>
   </body>
